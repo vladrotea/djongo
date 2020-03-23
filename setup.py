@@ -2,6 +2,7 @@ from setuptools import find_packages, setup
 import os
 import codecs
 import re
+import sys
 
 LONG_DESCRIPTION = """
 
@@ -77,6 +78,15 @@ def find_version(*file_paths):
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
 
+install_requires = [
+  'sqlparse==0.2.4',
+  'pymongo>=3.9.0',
+  'django>=2.0',
+  'six>=1.13.0',
+]
+
+if sys.version_info.major < 3 or sys.version_info.minor < 7:
+      install_requires.append("dataclasses")
 
 setup(
     name='djongo',
@@ -89,13 +99,7 @@ setup(
     author_email='nesdis@gmail.com',
     description=(
         'Driver for allowing Django to use MongoDB as the database backend.'),
-    install_requires=[
-        'sqlparse==0.2.4',
-        'pymongo>=3.9.0',
-        'django>=2.0',
-        'dataclasses>=0.1',
-        'six>=1.13.0',
-    ],
+    install_requires=install_requires,
     extras_require=dict(
         json=[
             'jsonfield>=2.0.2',
