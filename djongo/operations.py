@@ -9,7 +9,6 @@ import six
 
 
 class DatabaseOperations(BaseDatabaseOperations):
-
     def quote_name(self, name):
         if name.startswith('"') and name.endswith('"'):
             return name

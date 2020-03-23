@@ -13,7 +13,7 @@ DJANGO_TESTS_ROOT = os.path.dirname(MANAGE_DIR)
 TEST_DIR = os.path.join(
     DJANGO_TESTS_ROOT,
     'tests',
-    'v21',
+    'v30',
     'tests')
 
 django_version = None
@@ -128,10 +128,8 @@ def get_tests_list():
     try:
         test_list = file_contents[django_version][db_type]
     except KeyError:
-        test_list = {
-            'all_tests': [],
-            'failing_tests': []
-        }
+        test_list = file_contents['default'][db_type]
+
     return test_list
 
 

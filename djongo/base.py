@@ -49,6 +49,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     data_types = {
         'AutoField': 'int32',
         'BigAutoField': 'int64',
+        'SmallAutoField': 'int32',
         'BinaryField': 'binary',
         'BooleanField': 'boolean',
         'CharField': 'string',

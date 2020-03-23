@@ -1,5 +1,4 @@
-from distutils.core import setup
-from setuptools import find_packages
+from setuptools import find_packages, setup
 import os
 import codecs
 import re
@@ -91,10 +90,9 @@ setup(
     description=(
         'Driver for allowing Django to use MongoDB as the database backend.'),
     install_requires=[
-        'bson==0.5.8',
         'sqlparse==0.2.4',
-        'pymongo>=3.2.0',
-        'django>=2.0,<3',
+        'pymongo>=3.9.0',
+        'django>=2.0',
         'dataclasses>=0.1',
         'six>=1.13.0',
     ],

@@ -2,9 +2,9 @@ from djongo import models
 
 
 class ReferenceAuthor(models.Model):
+    _id = models.ObjectIdField()
     name = models.CharField(max_length=200)
     email = models.EmailField()
-    _id = models.ObjectIdField()
 
     def __str__(self):
         return self.name

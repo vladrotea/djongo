@@ -194,7 +194,7 @@ class ArrayField(Field):
 
         return ret
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         return self.to_python(value)
 
     def to_python(self, value):
@@ -485,7 +485,7 @@ class EmbeddedField(Field):
 
         return mdl_ob
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         return self.to_python(value)
 
     def to_python(self, value):
@@ -623,8 +623,8 @@ class ObjectIdFieldMixin:
         return self.to_python(value)
 
     def to_python(self, value):
-        if isinstance(value, str):
-            return ObjectId(value)
+        if isinstance(value, int):
+            return ObjectId(format(value, 'x'))
         return value
 
     def get_internal_type(self):
@@ -650,11 +650,16 @@ class ObjectIdField(ObjectIdFieldMixin, AutoField):
         super().__init__(*args, **id_field_args)
 
     def get_prep_value(self, value):
+        if isinstance(value, ObjectId):
+            value = int(str(value), 16)
         value = super(AutoField, self).get_prep_value(value)
         if value is None:
             return None
         return value
 
+    @cached_property
+    def validators(self):
+        return []
 
 class ArrayReferenceManagerMixin:
 
@@ -737,8 +742,10 @@ def create_reverse_array_reference_manager(superclass, rel):
 
             for field in self.field.foreign_related_fields:
                 val = getattr(self.instance, field.attname)
+                val = int(str(val), 16)
                 if val is None or (val == '' and empty_strings_as_null):
                     return queryset.none()
+
             return queryset
 
         def _make_filter(self, *objs):
@@ -1024,7 +1031,7 @@ class ArrayReferenceField(ForeignKey):
             for obj in sub_objs:
                 getattr(obj, field.name).db_manager(using).remove(*instances)
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         return self.to_python(value)
 
     def to_python(self, value):
